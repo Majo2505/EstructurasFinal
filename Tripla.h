@@ -10,19 +10,16 @@ private:
 	Tripla<T>* ant;
 	Tripla<T>* sig;
 	T el;
-	int peso;
+
 public:
 	Tripla(Tripla<T>* ant, T el, Tripla<T>* sig);
-	~Tripla();
+	~Tripla(); 
 	T getElemento();
 	Tripla<T>* getSiguiente();
 	Tripla<T>* getAnterior();
-	int getPeso();
-	void setPeso(int peso);
 	void setTriplaSig(Tripla<T>* t);
 	void setTriplaAnt(Tripla<T>* t);
 	void setElemento(T Elemento);
-
 };
 
 template<class T>
@@ -33,13 +30,12 @@ inline Tripla<T>::Tripla(Tripla<T>* ant, T el, Tripla<T>* sig)
 	this->sig = sig;
 }
 
+
 template<class T>
 inline Tripla<T>::~Tripla()
 {
-	if (sig != NULL)
-	{
-		delete sig;
-	}
+	// No hacemos nada aquí. 
+	// Evitamos 'delete sig' para no romper las fusiones de listas en Karger.
 }
 
 template<class T>
@@ -58,18 +54,6 @@ template<class T>
 inline Tripla<T>* Tripla<T>::getAnterior()
 {
 	return ant;
-}
-
-template<class T>
-inline int Tripla<T>::getPeso()
-{
-	return peso;
-}
-
-template<class T>
-inline void Tripla<T>::setPeso(int peso)
-{
-	this->peso = peso;
 }
 
 template<class T>
