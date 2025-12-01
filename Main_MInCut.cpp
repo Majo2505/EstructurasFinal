@@ -1,89 +1,98 @@
 #include <iostream>
-#include <ctime>
 #include <cstdlib>
+#include <ctime>
+#include <climits>
+#include <chrono> 
 #include "Grafo.h"
 
 using namespace std;
 
 int main()
 {
-    // 1. Semilla para los números aleatorios (IMPORTANTE)
-    srand((unsigned)time(NULL));
+    srand(time(0));
 
-    // 2. Cargar el grafo desde el archivo (UNA SOLA VEZ)
-    cout << "--- INICIO DEL PROGRAMA ---" << endl;
-    cout << "Cargando grafo desde 'texto.txt'..." << endl;
+    Grafo<string> grafoOriginal;
+    grafoOriginal.leerarchivo("texto2.txt");
 
-    Grafo<string> GrafoOriginal;
-    GrafoOriginal.leerarchivo();
+    cout << "--- ESTADISTICAS DEL GRAFO ORIGINAL ---" << endl;
+    cout << "Nodos: " << grafoOriginal.getNodosActivos() << endl;
+    cout << "Aristas: " << grafoOriginal.getAristas().size() << endl;
+    cout << "---------------------------------------" << endl;
 
-    int nodosIniciales = GrafoOriginal.getNodosActivos();
-    cout << "Grafo cargado correctamente." << endl;
-    cout << "Nodos iniciales: " << nodosIniciales << endl;
-    cout << "Aristas iniciales (x2): " << GrafoOriginal.getAristas().size() << endl;
+    int corridas = 50000;
+    int minCorte = INT_MAX;
 
-    // 3. Configuración de la corrida
-    int repeticiones = 50000; // El número mágico para Karger
-    int minCorteGlobal = 9999999;
+    // Puntero para guardar una COPIA del grafo que resulte ganador
+    Grafo<string>* mejorGrafoResultante = nullptr;
 
-    cout << "\nEjecutando " << repeticiones << " iteraciones. Por favor espere..." << endl;
+    cout << "Iniciando " << corridas << " corridas..." << endl;
 
-    // Iniciar cronómetro
-    clock_t inicio = clock();
+    // --- INICIAR CRONÓMETRO ---
+    auto inicio = chrono::high_resolution_clock::now();
 
-    // 4. Bucle Principal (El que debe volar)
-    for (int i = 0; i < repeticiones; i++)
+    for (int i = 0; i < corridas; i++)
     {
-        // A. COPIA RÁPIDA EN MEMORIA
-        // Usamos el constructor de copia optimizado que definiste en Grafo.h
-        Grafo<string> copia = GrafoOriginal;
+        // 1. Copia fresca del grafo
+        Grafo<string> g(grafoOriginal);
 
-        // B. ALGORITMO DE KARGER (Contracción)
-        // Mientras queden más de 2 supernodos...
-        while (copia.getNodosActivos() > 2)
+        // 2. Contracción hasta que queden 2 nodos
+        while (g.getNodosActivos() > 2)
         {
-            // 1. Elegir arista al azar
-            pair<string, string> nodos = copia.seleccionar_arista_valida();
-
-            // Si por alguna razón el grafo se desconectó antes, salimos
-            if (nodos.first == "" && nodos.second == "") break;
-
-            // 2. Contraer (Fusionar + Eliminar autociclos del vector y lista)
-            copia.contraer_arista(nodos.first, nodos.second);
+            pair<string, string> arista = g.seleccionar_arista_valida();
+            if (arista.first == "") break;
+            g.contraer_arista(arista.first, arista.second);
         }
 
-        // C. CALCULAR CORTE
-        // El tamaño del vector restante es el corte de esta corrida.
-        int corteDeEstaVuelta = copia.calcularCorte();
-		cout << corteDeEstaVuelta << endl;
+        // 3. Calcular corte
+        int corteActual = g.calcularCorte();
 
-        // OJO: Si tu archivo define aristas ida y vuelta (A->B y B->A), 
-        // el corte real es la mitad. Si no, es el valor directo.
-        // Asumiendo formato estándar de listas de adyacencia (bidireccional):
-        corteDeEstaVuelta = corteDeEstaVuelta / 2;
+        // 4. IMPRESIÓN EN VIVO (Lo que pediste)
+        // Imprime: "Corrida: Corte"
+        cout << (i + 1) << ": " << corteActual;
 
-        // D. ACTUALIZAR MÍNIMO
-        if (corteDeEstaVuelta < minCorteGlobal) {
-            minCorteGlobal = corteDeEstaVuelta;
-            // Opcional: Ver progreso si encuentra uno mejor
-            // cout << "Nuevo minimo encontrado: " << minCorteGlobal << " (Iter: " << i << ")" << endl;
+        // 5. Verificar si es el mejor hasta ahora
+        if (corteActual < minCorte) {
+            minCorte = corteActual;
+            cout << " <--- ¡NUEVO MINIMO ENCONTRADO!";
+
+            // --- GUARDAR EL GRAFO GANADOR ---
+            // Borramos el anterior mejor grafo guardado (si existe)
+            if (mejorGrafoResultante != nullptr) {
+                delete mejorGrafoResultante;
+            }
+            // Creamos una copia exacta de cómo quedó 'g' en este momento
+            mejorGrafoResultante = new Grafo<string>(g);
         }
-
-        // Al cerrar la llave '}', la 'copia' se destruye automáticamente.
+        cout << endl;
     }
 
-    // Detener cronómetro
-    clock_t fin = clock();
-    double tiempoSegundos = (double)(fin - inicio) / CLOCKS_PER_SEC;
-    double tiempoMinutos = tiempoSegundos / 60.0;
+    // --- DETENER CRONÓMETRO ---
+    auto fin = chrono::high_resolution_clock::now();
+    chrono::duration<double> duracion = fin - inicio;
 
-    // 5. Resultados Finales
-    cout << "\n--------------------------------" << endl;
-    cout << "RESULTADOS FINALIZADOS" << endl;
-    cout << "--------------------------------" << endl;
-    cout << "Corte Minimo Encontrado: " << minCorteGlobal << endl;
-    cout << "Tiempo Total: " << tiempoSegundos << " segundos (" << tiempoMinutos << " minutos)." << endl;
-    cout << "--------------------------------" << endl;
+    cout << "\n================ RESULTADOS FINALES ================" << endl;
+    cout << "Min Cut encontrado: " << minCorte << endl;
+    cout << "Tiempo total: " << duracion.count() << " s" << endl;
+    cout << "Promedio por corrida: " << (duracion.count() / corridas) * 1000 << " ms" << endl;
+
+    // 6. MOSTRAR CÓMO QUEDÓ EL GRAFO GANADOR
+    if (mejorGrafoResultante != nullptr) {
+        cout << "\n--- ASI QUEDO EL GRAFO (Deben ser 2 nodos) ---" << endl;
+        cout << "Nodos activos restantes: " << mejorGrafoResultante->getNodosActivos() << endl;
+
+        // Recorremos el mapa para mostrar los nodos sobrevivientes
+        // Nota: Como es un mapa, iteramos sobre pares (clave, valor)
+        int contador = 1;
+        for (auto& par : mejorGrafoResultante->getMapa()) {
+            cout << "\nSuper-Nodo " << contador++ << " (ID: " << par.first << "):" << endl;
+            cout << "Conectado a: ";
+            par.second->getLista().mostrar(); // Muestra la lista de adyacencia
+        }
+
+        // Limpiamos memoria
+        delete mejorGrafoResultante;
+    }
+    cout << "====================================================" << endl;
 
     return 0;
 }
