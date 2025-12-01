@@ -41,6 +41,8 @@ public:
     // MODIFICADO: Ahora elimina físicamente los autociclos
     void contraer_arista(string n1, string n2);
     int calcularCorte();
+	void mostrarGrafo();
+	void mostrarSupernodosFinales(); 
 };
 
 template<class T>
@@ -231,7 +233,35 @@ inline int Grafo<T>::calcularCorte()
     }
     return corte;   
 }
+template<class T>
+inline void Grafo<T>::mostrarGrafo()
+{
+    cout << "--- Grafo ---" << endl;
+    for (auto& par : G)
+    {
+        cout << "[" << par.first << "] -> ";
+        par.second->getLista().mostrar();
+    }
+}
 
+// Función para mostrar los dos supernodos finales (añadir a Grafo.h e implementar)
+template<class T>
+inline void Grafo<T>::mostrarSupernodosFinales()
+{
+    cout << "--- Supernodos Finales ---" << endl;
+    for (auto& par : G)
+    {
+        // El representante es la "cabeza" del supernodo.
+        // Después del proceso de Union-Find, solo 2 nodos tendrán su padre igual a sí mismos.
+        if (par.second->getPadre() == par.first)
+        {
+            cout << "Supernodo Representante: " << par.first << endl;
+            cout << "   - Vertices Originales: (Requiere recorrido adicional de DSU)" << endl;
+            cout << "   - Lista de Adyacencia Remanente: ";
+            par.second->getLista().mostrar();
+        }
+    }
+}
 
 /*
 #pragma once
