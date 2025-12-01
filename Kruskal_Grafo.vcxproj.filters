@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Kruskal_Grafo.cpp">
+    <ClCompile Include="Arista.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Arista.cpp">
+    <ClCompile Include="Main_MInCut.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

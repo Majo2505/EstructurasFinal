@@ -1,2 +1,8 @@
-LaPaz Oruro 3
-LaPaz Cochabamba 5
+Tokio	Atlanta	Yeda	Sapporo	Taoyuan	Buenos_Aires	Montreal	Toronto	Katowice	São_Paulo	Ciudad_de_México	Hamburgo	Núremberg	Budapest	Hannover	Londres	Edmonton	San_Luis	Dakar	Jinan	Yantái	Tianjin	Baltimore	Calcuta	Louisville	-1
+Nueva_York	Xuzhou	Wenzhou	Moscú	Calgary	Houston	Colonia	Bruselas	Sídney	Los_Ángeles	Nueva_Orleans	Perth	Búfalo	Lille	Ciudad_Ho_Chi_Minh	Fuzhou	San_Petersburgo	Busan	Tampa	Mineápolis	Kunming	Dubái	Columbus	Yakarta	-1
+Los_Ángeles	Múnich	Xuzhou	Wenzhou	Charlotte	Miami	Dallas	Dongying	Hangzhou	Zibo	Hong_Kong	Kansas_City	Calgary	Taipéi	Oslo	Nueva_York	Liverpool	Abu_Dabi	Praga	Nápoles	Kuala_Lumpur	Birmingham	Melbourne	Hiroshima	Atenas	Taiyuan	Phoenix	-1
+Londres	Yantái	Xiamen	Orlando	Changzhou	Belo_Horizonte	Roma	Sacramento	Ciudad_de_México	Denver	Budapest	Madrid	Jacksonville	Zúrich	Jinan	Stuttgart	Kaohsiung	Changsha	San_José	Karlsruhe	Cochabamba	Virginia_Beach	Nankín	Tokio	Bangkok	Shenzhen	Brasilia	-1
+París	Jacksonville	Milwaukee	Shijiazhuang	Orlando	Núremberg	Toronto	Cincinnati	Cleveland	Cantón	Karlsruhe	Edmonton	Riad	Tianjin	Monterrey	Atlanta	Shenzhen	Abiyán	Hartford	Nashville	Denver	Bangkok	-1
+Seúl	Taoyuan	San_Diego	Qingdao	Taichung	Ankara	Edmonton	Cincinnati	Cleveland	Washington_D._C.	Louisville	Lisboa	Estambul	Riad	Roma	Esmirna	Bangkok	Montreal	Filadelfia	Tianjin	Buenos_Aires	Shenzhen	-1
+Osaka	Milwaukee	Oklahoma_City	Salt_Lake_City	Yeda	El_Cairo	Qingdao	Lisboa	Sacramento	Hamburgo	Nagoya	Santiago	Filadelfia	Ámsterdam	São_Paulo	San_Diego	Roma	Monterrey	Toronto	Shanghái	Katowice	Brasilia	-1
+Shanghái	Oklahoma_City	Taoyuan	Xiamen	Salt_Lake_City	Copenhague	Lima	Sapporo	Río_de_Janeiro	Budapest	Estambul	Jinan	Lagos	Chicago	Qingdao	Dakar	Fráncfort_del_Meno	Tianjin	Virginia_Beach	Lisboa	Toronto	Viena	Ankara	Madrid	Cleveland	Zúrich	Ámsterdam	Osaka	-1

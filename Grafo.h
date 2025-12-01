@@ -44,7 +44,10 @@ public:
 };
 
 template<class T>
-inline Grafo<T>::Grafo() { num_nodos_activos = 0; }
+inline Grafo<T>::Grafo() 
+{ 
+    num_nodos_activos = 0; 
+}
 
 // Constructor de Copia (Versión Vector - La Robusta)
 template<class T>

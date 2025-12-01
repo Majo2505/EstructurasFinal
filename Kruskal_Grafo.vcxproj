@@ -124,7 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arista.cpp" />
-    <ClCompile Include="Kruskal_Grafo.cpp" />
+    <ClCompile Include="Main_MInCut.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arista.h" />
