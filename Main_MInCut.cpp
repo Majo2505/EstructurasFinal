@@ -55,6 +55,7 @@ int main()
         // C. CALCULAR CORTE
         // El tamaño del vector restante es el corte de esta corrida.
         int corteDeEstaVuelta = copia.calcularCorte();
+		cout << corteDeEstaVuelta << endl;
 
         // OJO: Si tu archivo define aristas ida y vuelta (A->B y B->A), 
         // el corte real es la mitad. Si no, es el valor directo.

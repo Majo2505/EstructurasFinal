@@ -184,26 +184,26 @@ inline void Grafo<T>::contraer_arista(string n1, string n2)
 
     // 4. REQUISITO: ELIMINAR AUTOCICLOS DEL VECTOR (Optimizado "Swap & Pop")
     // Recorremos el vector y borramos las aristas que quedaron dentro del supernodo n1
-    for (int i = 0; i < aristas.size(); )
-    {
-        string p1 = encontrar_representante(aristas[i].getOrigen());
-        string p2 = encontrar_representante(aristas[i].getDestino());
+    //for (int i = 0; i < aristas.size(); )
+    //{
+    //    string p1 = encontrar_representante(aristas[i].getOrigen());
+    //    string p2 = encontrar_representante(aristas[i].getDestino());
 
-        if (p1 == p2)
-        {
-            // Es un autociclo. Lo borramos rápido.
-            // Sobrescribimos el actual con el último del vector
-            aristas[i] = aristas.back();
-            // Eliminamos el último (que ahora está duplicado en 'i')
-            aristas.pop_back();
-            // NO incrementamos 'i' porque ahora en 'i' hay un elemento nuevo que debemos revisar.
-        }
-        else
-        {
-            // Es válida, avanzamos
-            i++;
-        }
-    }
+    //    if (p1 == p2)
+    //    {
+    //        // Es un autociclo. Lo borramos rápido.
+    //        // Sobrescribimos el actual con el último del vector
+    //        aristas[i] = aristas.back();
+    //        // Eliminamos el último (que ahora está duplicado en 'i')
+    //        aristas.pop_back();
+    //        // NO incrementamos 'i' porque ahora en 'i' hay un elemento nuevo que debemos revisar.
+    //    }
+    //    else
+    //    {
+    //        // Es válida, avanzamos
+    //        i++;
+    //    }
+    //}
 
     num_nodos_activos--;
 }
@@ -211,11 +211,25 @@ inline void Grafo<T>::contraer_arista(string n1, string n2)
 template<class T>
 inline int Grafo<T>::calcularCorte()
 {
-    // Como hemos eliminado los autociclos físicamente del vector en cada paso,
-    // el tamaño del vector remanente ES el corte.
-    // (Dividido entre 2 si es bidireccional, o directo si no).
-    // Esto simplifica mucho el cálculo final.
-    return aristas.size();
+    //// Como hemos eliminado los autociclos físicamente del vector en cada paso,
+    //// el tamaño del vector remanente ES el corte.
+    //// (Dividido entre 2 si es bidireccional, o directo si no).
+    //// Esto simplifica mucho el cálculo final.
+    //return aristas.size();
+    int corte = 0;
+    // Recorremos el vector de aristas NO MODIFICADO
+    for (const auto& arista : aristas)
+    {
+        string p1 = encontrar_representante(arista.getOrigen());
+        string p2 = encontrar_representante(arista.getDestino());
+
+        // Si los representantes son diferentes, es una arista de corte
+        if (p1 != p2)
+        {
+            corte++;
+        }
+    }
+    return corte;   
 }
 
 
