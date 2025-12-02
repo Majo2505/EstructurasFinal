@@ -108,9 +108,6 @@ inline void Grafo<T>::leerarchivo(const string& nombreArchivo)
         stringstream ss(linea);
         if (!(ss >> origen)) continue;
 
-        // Quitamos los dos puntos ':' si vienen pegados al nombre (ej: "LP:")
-        if (origen.back() == ':') origen.pop_back();
-
         while (ss >> destino) 
         {
             if (destino == "-1") 
@@ -149,7 +146,9 @@ inline pair<string, string> Grafo<T>::Azar()
         string p2 = a.getDestino();
 
         if (p1 != p2)
-            return { p1, p2 }; // si es autociclo, reintenta
+        {
+            return { p1, p2 };
+        }
     }
 }
 
@@ -190,8 +189,6 @@ inline void Grafo<T>::contraer_arista(string n1, string n2)
         delete G[n2]; // Liberar memoria
         G.erase(n2);  // Sacarlo del mapa
     }
-
-    // Reducimos nodos activos
     num_nodos_activos--;
 }
 
@@ -215,8 +212,6 @@ void Grafo<T>::mostrarGrafo()
     typename unordered_map<string, Vertice<T>*>::iterator it;
 
     for (it = G.begin(); it != G.end(); it++) {
-        // it->first  es la CLAVE (el nombre del nodo, string)
-        // it->second es el VALOR (el puntero al Vertice)
         cout << contador++ << ". [" << it->first << "] -> ";
         it->second->getLista().mostrar();
 

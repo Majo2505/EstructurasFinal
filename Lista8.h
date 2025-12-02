@@ -14,7 +14,6 @@ public:
 
     bool insertar_Final(T el);
     void mostrar();
-    // 1. Fusión O(1): Pega una lista al final de otra sin recorrerla
     void absorberLista(Lista8<T>& otraLista);
 };
 
@@ -68,7 +67,6 @@ inline void Lista8<T>::mostrar()
     cout << endl;
 }
 
-// --- FUSIÓN RÁPIDA (O(1)) ---
 template<class T>
 inline void Lista8<T>::absorberLista(Lista8<T>& otraLista)
 {
