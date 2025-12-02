@@ -13,6 +13,7 @@ int main()
 
     Grafo<string> grafoOriginal;
     grafoOriginal.leerarchivo("texto.txt");
+    grafoOriginal.mostrarGrafo();
 
     cout << "--- ESTADISTICAS DEL GRAFO ORIGINAL ---" << endl;
     cout << "Nodos: " << grafoOriginal.getNodosActivos() << endl;
