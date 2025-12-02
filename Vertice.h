@@ -13,11 +13,7 @@ private:
 public:
     Vertice();
     ~Vertice();
-
-    // Devuelve referencia a la lista de adyacencia
     Lista8<T>& getLista();
-
-    // Get y Set del elemento
     string getElemento() const;
     void setElemento(const string& el);
 };

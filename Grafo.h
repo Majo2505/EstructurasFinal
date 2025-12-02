@@ -34,9 +34,10 @@ public:
     void inicializar_nodos_activos();
     int getNodosActivos();
 
-    pair<string, string> seleccionar_arista_valida();
+    pair<string, string> Azar();
     void contraer_arista(string n1, string n2);
     int calcularCorte();
+    void mostrarGrafo();
 };
 
 template<class T>
@@ -110,16 +111,12 @@ inline void Grafo<T>::leerarchivo(const string& nombreArchivo)
         // Quitamos los dos puntos ':' si vienen pegados al nombre (ej: "LP:")
         if (origen.back() == ':') origen.pop_back();
 
-        while (ss >> destino) {
-            if (destino == "-1") break;
+        while (ss >> destino) 
+        {
+            if (destino == "-1") 
+                break;
 
-            // 1. SIEMPRE insertamos en el Mapa (Vertices)
-            // Para que el nodo sepa quiénes son sus vecinos (ida y vuelta)
             insertarArista(origen, destino);
-
-            // 2. FILTRO PARA EL VECTOR (Karger):
-            // Solo agregamos la arista al vector si cumple orden alfabético.
-            // Esto evita meter la arista "de regreso" (duplicada).
             if (origen < destino) {
                 aristas.push_back(Arista<T>(origen, destino));
             }
@@ -139,7 +136,7 @@ inline int Grafo<T>::getNodosActivos() { return num_nodos_activos; }
 
 // Selección aleatoria de arista válida
 template<class T>
-inline pair<string, string> Grafo<T>::seleccionar_arista_valida()
+inline pair<string, string> Grafo<T>::Azar()
 {
     if (aristas.empty()) return { "", "" };
 
@@ -151,20 +148,17 @@ inline pair<string, string> Grafo<T>::seleccionar_arista_valida()
         string p1 = a.getOrigen();
         string p2 = a.getDestino();
 
-        if (p1 != p2) return { p1, p2 };
-        // si es autociclo, reintenta
+        if (p1 != p2)
+            return { p1, p2 }; // si es autociclo, reintenta
     }
 }
 
-
-
-// Grafo.h
 
 // Contraer arista n1 (sobrevive) <- n2 (desaparece)
 template<class T>
 inline void Grafo<T>::contraer_arista(string n1, string n2)
 {
-    // 1. FASE DE REDIRECCIÓN (Crucial sin Union-Find)
+   
     // Recorremos TODAS las aristas. Si alguna apunta a n2, ahora debe apuntar a n1.
     for (int i = 0; i < aristas.size(); i++) {
         if (aristas[i].getOrigen() == n2) {
@@ -175,15 +169,14 @@ inline void Grafo<T>::contraer_arista(string n1, string n2)
         }
     }
 
-    // 2. FASE DE LIMPIEZA DE AUTO-CICLOS [cite: 59]
-    // Ahora que todo apunta a n1, eliminamos las aristas que son n1 -> n1
+    // 2. FASE DE LIMPIEZA DE AUTO-CICLOS
+    // Ahora que todo apunta a n1, se eliminab aristas que son n1 -> n1
     // (Originalmente eran n1->n2, n2->n1 o n1->n1)
     for (int i = 0; i < aristas.size(); ) {
         string o = aristas[i].getOrigen();
         string d = aristas[i].getDestino();
 
-        if (o == d) { // Detecta auto-ciclo (ej: n1 - n1)
-            // Swap and pop (borrado rápido en vector no ordenado)
+        if (o == d) {
             aristas[i] = aristas.back();
             aristas.pop_back();
         }
@@ -192,18 +185,8 @@ inline void Grafo<T>::contraer_arista(string n1, string n2)
         }
     }
 
-    // 3. ACTUALIZACIÓN DE LISTAS (Opcional si solo usas el vector para el cálculo final)
-    // Nota: Dado que tu cálculo de corte depende de 'aristas.size()',
-    // la parte del vector arriba es la más importante.
-    // Para mantener consistencia en la estructura de nodos:
     if (G.find(n2) != G.end()) {
-        // Absorbemos la lista para no perder info (aunque los nodos vecinos
-        // seguirán teniendo "n2" en sus listas, lo cual es complejo de arreglar
-        // sin recorrer todo el grafo. Para Karger simple, el vector manda).
         G[n1]->getLista().absorberLista(G[n2]->getLista());
-
-        // Marcamos n2 como eliminado "lógicamente" quitándolo del mapa
-        // o simplemente reduciendo el contador.
         delete G[n2]; // Liberar memoria
         G.erase(n2);  // Sacarlo del mapa
     }
@@ -217,4 +200,27 @@ template<class T>
 inline int Grafo<T>::calcularCorte()
 {
     return aristas.size();
+}
+
+
+template<class T>
+void Grafo<T>::mostrarGrafo()
+{
+    cout << "========================================" << endl;
+    cout << "Total Nodos Activos: " << getNodosActivos() << endl;
+    cout << "Total Aristas Vivas: " << aristas.size() << endl;
+    cout << "----------------------------------------" << endl;
+
+    int contador = 1;
+    typename unordered_map<string, Vertice<T>*>::iterator it;
+
+    for (it = G.begin(); it != G.end(); it++) {
+        // it->first  es la CLAVE (el nombre del nodo, string)
+        // it->second es el VALOR (el puntero al Vertice)
+        cout << contador++ << ". [" << it->first << "] -> ";
+        it->second->getLista().mostrar();
+
+        cout << endl;
+    }
+    cout << "========================================\n" << endl;
 }

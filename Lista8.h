@@ -14,14 +14,8 @@ public:
 
     bool insertar_Final(T el);
     void mostrar();
-
-    // --- MÉTODOS CLAVE PARA KARGER ---
-
     // 1. Fusión O(1): Pega una lista al final de otra sin recorrerla
     void absorberLista(Lista8<T>& otraLista);
-
-    // 2. Elimina TODAS las apariciones de un elemento (autociclos)
-    void eliminar_todos(T el);
 };
 
 template<class T>
@@ -94,41 +88,4 @@ inline void Lista8<T>::absorberLista(Lista8<T>& otraLista)
 
     otraLista.primer = NULL;
     otraLista.ultimo = NULL;
-}
-
-// --- ELIMINACIÓN TOTAL (para borrar autociclos) ---
-template<class T>
-inline void Lista8<T>::eliminar_todos(T el)
-{
-    Tripla<T>* actual = primer;
-
-    while (actual != NULL)
-    {
-        Tripla<T>* siguiente = actual->getSiguiente();
-
-        if (actual->getElemento() == el)
-        {
-            if (actual == primer)
-            {
-                primer = primer->getSiguiente();
-                if (primer != NULL) primer->setTriplaAnt(NULL);
-                else ultimo = NULL;
-            }
-            else if (actual == ultimo)
-            {
-                ultimo = ultimo->getAnterior();
-                ultimo->setTriplaSig(NULL);
-            }
-            else
-            {
-                actual->getAnterior()->setTriplaSig(actual->getSiguiente());
-                actual->getSiguiente()->setTriplaAnt(actual->getAnterior());
-            }
-
-            actual->setTriplaSig(NULL);
-            delete actual;
-        }
-
-        actual = siguiente;
-    }
 }

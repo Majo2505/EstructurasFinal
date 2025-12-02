@@ -22,8 +22,7 @@ int main()
     int corridas = 50000;
     int minCorte = INT_MAX;
 
-    // Puntero para guardar una COPIA del grafo que resulte ganador
-    Grafo<string>* mejorGrafoResultante = nullptr;
+    Grafo<string>* mejorGrafoResultante = nullptr;  // Puntero para guardar una COPIA del grafo que resulte ganador
 
     cout << "Iniciando " << corridas << " corridas..." << endl;
 
@@ -32,36 +31,33 @@ int main()
 
     for (int i = 0; i < corridas; i++)
     {
-        // 1. Copia fresca del grafo
-        Grafo<string> g(grafoOriginal);
+        
+        Grafo<string> g(grafoOriginal); // Copia del grafo
 
-        // 2. Contracción hasta que queden 2 nodos
+        // Contracción hasta que queden 2 nodos
         while (g.getNodosActivos() > 2)
         {
-            pair<string, string> arista = g.seleccionar_arista_valida();
-            if (arista.first == "") break;
+            pair<string, string> arista = g.Azar();
+            if (arista.first == "") 
+                break;
             g.contraer_arista(arista.first, arista.second);
         }
 
-        // 3. Calcular corte
-        int corteActual = g.calcularCorte();
+        int corteActual = g.calcularCorte();  // Calcular corte
 
-        // 4. IMPRESIÓN EN VIVO (Lo que pediste)
-        // Imprime: "Corrida: Corte"
-        cout << (i + 1) << ": " << corteActual;
+        cout << (i + 1) << ": " << corteActual; // Imprime: "Corrida: Corte"
 
-        // 5. Verificar si es el mejor hasta ahora
-        if (corteActual < minCorte) {
+        if (corteActual < minCorte) 
+        {
             minCorte = corteActual;
             cout << " <--- ¡NUEVO MINIMO ENCONTRADO!";
 
-            // --- GUARDAR EL GRAFO GANADOR ---
-            // Borramos el anterior mejor grafo guardado (si existe)
-            if (mejorGrafoResultante != nullptr) {
+            // Borra anterior mejor grafo guardado (si existe)
+            if (mejorGrafoResultante != nullptr) 
+            {
                 delete mejorGrafoResultante;
             }
-            // Creamos una copia exacta de cómo quedó 'g' en este momento
-            mejorGrafoResultante = new Grafo<string>(g);
+            mejorGrafoResultante = new Grafo<string>(g);  // Copia de grafo con menor corte
         }
         cout << endl;
     }
@@ -73,23 +69,13 @@ int main()
     cout << "\n================ RESULTADOS FINALES ================" << endl;
     cout << "Min Cut encontrado: " << minCorte << endl;
     cout << "Tiempo total: " << duracion.count() << " s" << endl;
-    cout << "Promedio por corrida: " << (duracion.count() / corridas) * 1000 << " ms" << endl;
 
-    // 6. MOSTRAR CÓMO QUEDÓ EL GRAFO GANADOR
-    if (mejorGrafoResultante != nullptr) {
-        cout << "\n--- ASI QUEDO EL GRAFO (Deben ser 2 nodos) ---" << endl;
+    //  MOSTRAR CÓMO QUEDÓ EL GRAFO con MIN CUT
+    if (mejorGrafoResultante != nullptr)
+    {
+        cout << "\n--- ASI QUEDO EL GRAFO ---" << endl;
         cout << "Nodos activos restantes: " << mejorGrafoResultante->getNodosActivos() << endl;
-
-        // Recorremos el mapa para mostrar los nodos sobrevivientes
-        // Nota: Como es un mapa, iteramos sobre pares (clave, valor)
-        int contador = 1;
-        for (auto& par : mejorGrafoResultante->getMapa()) {
-            cout << "\nSuper-Nodo " << contador++ << " (ID: " << par.first << "):" << endl;
-            cout << "Conectado a: ";
-            par.second->getLista().mostrar(); // Muestra la lista de adyacencia
-        }
-
-        // Limpiamos memoria
+        mejorGrafoResultante->mostrarGrafo();
         delete mejorGrafoResultante;
     }
     cout << "====================================================" << endl;

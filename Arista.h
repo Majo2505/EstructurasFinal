@@ -14,10 +14,14 @@ public:
     Arista(const T& o, const T& d) : origen(o), destino(d) {}
 
     // Getters
-    T getOrigen() const { return origen; }
-    T getDestino() const { return destino; }
+    T getOrigen() const { 
+        return origen; }
+    T getDestino() const { 
+        return destino; }
 
     // Setters
-    void setOrigen(const T& o) { origen = o; }
-    void setDestino(const T& d) { destino = d; }
+    void setOrigen(const T& o) { 
+        origen = o; }
+    void setDestino(const T& d) { 
+        destino = d; }
 };
