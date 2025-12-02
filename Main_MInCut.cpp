@@ -12,7 +12,7 @@ int main()
     srand(time(0));
 
     Grafo<string> grafoOriginal;
-    grafoOriginal.leerarchivo("texto2.txt");
+    grafoOriginal.leerarchivo("texto.txt");
 
     cout << "--- ESTADISTICAS DEL GRAFO ORIGINAL ---" << endl;
     cout << "Nodos: " << grafoOriginal.getNodosActivos() << endl;

@@ -123,15 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Arista.cpp" />
     <ClCompile Include="Main_MInCut.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arista.h" />
-    <ClInclude Include="HEAP.h" />
     <ClInclude Include="Grafo.h" />
     <ClInclude Include="Lista8.h" />
-    <ClInclude Include="Nodo.h" />
     <ClInclude Include="Tripla.h" />
     <ClInclude Include="Vertice.h" />
   </ItemGroup>
